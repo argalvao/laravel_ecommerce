@@ -1,86 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Product - Ecommerce App</title>
+@extends('layouts.app')
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" >
-</head>
-<body>
+@section('content')
 
-<div class="container mt-2">
-  
-<div class="row">
+<div class="container">
     <div class="col-lg-12 margin-tb">
-        <div class="pull-left mb-2">
-            <h2>Add a new product</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('products.index') }}"> Back</a>
-        </div>
+            <div class="col-lg-12 margin-tb">
+                <div class="pull-left mb-2">
+                    <h2>Adicionar um novo produto</h2>
+                </div>
+                <div class="pull-right">
+                    <a class="btn btn-primary" href="{{ route('products.index') }}"> Voltar</a><br>
+                </div>
+            </div>
+        </div><br>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                    <div class="card-body">
+                         <div class="container mt-2">
+                            <div class="row">
+    
     </div>
-</div>
-   
-  @if(session('status'))
-    <div class="alert alert-success mb-1 mt-1">
-        {{ session('status') }}
-    </div>
-  @endif
-   
-<form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+
+    @if(session('status'))
+        <div class="alert alert-success mb-1 mt-1">
+            {{ session('status') }}
+        </div>
+    @endif
+
+    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-  
-     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Product Title:</strong>
-                <input type="text" name="title" class="form-control" placeholder="Product title">
-               @error('title')
-                  <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-               @enderror
+      
+         <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Nome:</strong>
+                    <input type="text" name="nome" class="form-control" placeholder="Nome do produto">
+                   @error('nome')
+                      <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                   @enderror
+                </div>
             </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Descrição:</strong>
+                    <textarea class="form-control" style="height:150px" name="descricao" placeholder="Descrição do produto"></textarea>
+                    @error('descricao')
+                      <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>        
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Imagem:</strong>
+                     <input type="file" name="imagem" class="form-control" placeholder="Imagem do produto">
+                    @error('imagem')
+                      <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                   @enderror
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Preço:</strong>
+                    <input type="text" name="valor" class="form-control" placeholder="Preço unitário">
+                   @error('valor')
+                      <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                   @enderror
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary ml-3">Salvar</button>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Product Description:</strong>
-                <textarea class="form-control" style="height:150px" name="description" placeholder="Product description"></textarea>
-                @error('description')
-                  <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>        
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Product Image:</strong>
-                 <input type="file" name="image" class="form-control" placeholder="Product image">
-                @error('image')
-                  <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-               @enderror
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Product price:</strong>
-                <input type="text" name="price" class="form-control" placeholder="Product price">
-               @error('price')
-                  <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-               @enderror
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Amount:</strong>
-                <input type="number" name="qtd" class="form-control" placeholder="Amount">
-               @error('qtd')
-                  <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-               @enderror
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary ml-3">Register</button>
-    </div>
-   
-</form>
+       
+    </form>
+</div>
 
-</body>
-</html>
+@endsection

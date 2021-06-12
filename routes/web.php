@@ -26,3 +26,5 @@ Route::get('products/edit/{id}', [App\Http\Controllers\ProductController::class,
 Route::post('products/update/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('update.products');
 
 Route::get('products/detail/{id}', [App\Http\Controllers\ProductController::class, 'detail'])->name('detail.product');
+
+

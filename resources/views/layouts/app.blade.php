@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Ecommerce') }}</title>
+    <title>{{ config('app.name', 'Ecommerce App') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -18,37 +18,53 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config("Ecommerce", 'Ecommerce') }}
-                </a>
+                <fieldset>
+                    <b><a class="navbar-brand" href="{{ url('/') }}">
+                        {{ config("Ecommerce", 'Ecommerce APP') }}
+                    </a></b>
+                </fieldset>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
+                    <!-- Left Side Of Navbar --> 
+                    <fieldset>
+                               <ul class="nav navbar-nav">
+                                    <li><a href="{{ url('/home') }}" class="navbar-brand" >Home</a></li>
+                                </ul>
+                    </fieldset>
+                    <fieldset>
+                        <form class="navbar-form navbar-left">
+                            <div class="row">
+                              <fieldset class="form-group col-md-8">
+                                   <input type="text" class="form-control" placeholder="O que você deseja?">
+                               </fieldset>
+                               <fieldset class="form-group col-md-4">
+                                   <button type="submit" class="btn btn-primary">Pesquisar</button>
+                               </fieldset>
+                            </div>
+                        </form>
+                    </fieldset>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Entrar') }}</a>
                                 </li>
                             @endif
                             
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Cadastre-se') }}</a>
                                 </li>
                             @endif
                         @else
@@ -79,5 +95,15 @@
             @yield('content')
         </main>
     </div>
+    <div>
+        @include('layouts.footer')
+    </div>
 </body>
+
+
 </html>
+
+
+
+
+

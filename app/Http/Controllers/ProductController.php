@@ -49,23 +49,21 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'description' => 'required',
-            'price' => 'required',
-            'qtd' => 'required',
+            'nome' => 'required',
+            'imagem' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'descricao' => 'required',
+            'valor' => 'required',
         ]);
-        $path = $request->file('image')->store('public/images');
+        $path = $request->file('imagem')->store('public/images');
         $product = new Product;
-        $product->title = $request->title;
-        $product->description = $request->description;
-        $product->image = $path;
-        $product->price = $request->price;
-        $product->qtd = $request->qtd;
+        $product->nome = $request->nome;
+        $product->descricao = $request->descricao;
+        $product->imagem = $path;
+        $product->valor = $request->valor;
         $product->save();
      
         return redirect()->route('products.index')
-                        ->with('success','Product created');
+                        ->with('success','Produto adicionado com sucesso!');
     }
 
     /**
@@ -115,21 +113,20 @@ class ProductController extends Controller
         $product = Product::find($id);
         //dd($product);
         
-        if($request->hasFile('image')){
+        if($request->hasFile('imagem')){
             $request->validate([
-              'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+              'imagem' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             ]);
-            $path = $request->file('image')->store('public/images');
-            $product->image = $path;
+            $path = $request->file('imagem')->store('public/images');
+            $product->imagem = $path;
         }
-        $product->title = $request->title;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->qtd = $request->qtd;
+        $product->nome = $request->nome;
+        $product->descricao = $request->descricao;
+        $product->valor = $request->valor;
         $product->save();
     
         return redirect()->route('products.index')
-                        ->with('success','Product updated successfully');
+                        ->with('success','Produto atualizado com sucesso!');
     }
 
     /**
@@ -143,6 +140,6 @@ class ProductController extends Controller
         $product->delete();
     
         return redirect()->route('products.index')
-                        ->with('success','Product has been deleted successfully');
+                        ->with('success','Produto deletado com sucesso!');
     }
 }
