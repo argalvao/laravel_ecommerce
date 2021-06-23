@@ -17,9 +17,7 @@ class PedidoProdutos extends Migration
             $table->increments('id');
             $table->integer('pedido_id')->unsigned(); // unsigned: somente inteiros positivos
             $table->integer('produto_id')->unsigned();  // unsigned: somente inteiros positivos
-            $table->enum('status', ['RE', 'PA', 'CA']); // Reservado, Pago, Cancelado
             $table->decimal('valor', 6, 2)->default(0);
-            $table->decimal('desconto', 6, 2)->default(0);
             $table->timestamps();
             $table->foreign('pedido_id')->references('id')->on('pedidos');
             $table->foreign('produto_id')->references('id')->on('products');

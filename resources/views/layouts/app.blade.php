@@ -41,17 +41,14 @@
                                 </ul>
                     </fieldset>
                     <fieldset>
-                        <form class="navbar-form navbar-left">
-                            <div class="row">
-                              <fieldset class="form-group col-md-8">
-                                   <input type="text" class="form-control" placeholder="O que você deseja?">
-                               </fieldset>
-                               <fieldset class="form-group col-md-4">
-                                   <button type="submit" class="btn btn-primary">Pesquisar</button>
-                               </fieldset>
-                            </div>
-                        </form>
+                               <ul class="nav navbar-nav">
+                                    <li><a href="{{ url('/carrinho') }}" class="navbar-brand" >Carrinho<button type="button" class="btn btn-default" aria-label="Alinhar na esquerda">
+                                      <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                                    </button></span></a>
+                                    </li>
+                                </ul>
                     </fieldset>
+
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -68,16 +65,12 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <li class="nav-item">
+                                <div aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Sair') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

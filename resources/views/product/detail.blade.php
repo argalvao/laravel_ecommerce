@@ -44,7 +44,8 @@
             </div>
             <div class="section col s12 m6 l6">
                 <h4 class="left col l6"> R$ {{ $product->valor }} </h4>
-                <form method="POST" action="">
+                <form method="POST" action="{{ route('carrinho.adicionar', $product) }}">
+                    @csrf
                     <input type="hidden" name="id" value="{{ $product->id }}">
                     <button class="btn btn-success col l6 m6 s6 green accent-4 tooltipped" data-position="bottom" data-delay="50" data-tooltip="O produto será adicionado ao seu carrinho">Adicionar ao carrinho</button>   
                 </form>

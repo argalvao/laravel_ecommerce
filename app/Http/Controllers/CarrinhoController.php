@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Pedido;
-use App\Product;
-use App\PedidoProduto;
+use App\Models\Pedido;
+use App\Models\Product;
+use App\Models\PedidoProduto;
 
 class CarrinhoController extends Controller
 {
@@ -20,20 +20,22 @@ class CarrinhoController extends Controller
     {
 
         $pedidos = Pedido::where([
-            'status'  => 'RE',
             'user_id' => Auth::id()
             ])->get();
 
         return view('carrinho.index', compact('pedidos'));
     }
 
-    public function adicionar()
+    public function adicionar($id)
     {
 
         $this->middleware('VerifyCsrfToken');
 
         $req = Request();
-        $idproduto = $req->input('id');
+
+        $idproduto = $id;
+
+        #dd($idproduto);
 
         $produto = Product::find($idproduto);
         if( empty($produto->id) ) {
@@ -45,13 +47,11 @@ class CarrinhoController extends Controller
 
         $idpedido = Pedido::consultaId([
             'user_id' => $idusuario,
-            'status'  => 'RE' // Reservada
             ]);
 
         if( empty($idpedido) ) {
             $pedido_novo = Pedido::create([
                 'user_id' => $idusuario,
-                'status'  => 'RE'
                 ]);
 
             $idpedido = $pedido_novo->id;
@@ -62,7 +62,6 @@ class CarrinhoController extends Controller
             'pedido_id'  => $idpedido,
             'produto_id' => $idproduto,
             'valor'      => $produto->valor,
-            'status'     => 'RE'
             ]);
 
         $req->session()->flash('mensagem-sucesso', 'Produto adicionado ao carrinho com sucesso!');
@@ -71,25 +70,26 @@ class CarrinhoController extends Controller
 
     }
 
-    public function remover()
+    public function remover(Request $req)
     {
 
-        $this->middleware('VerifyCsrfToken');
+        #$this->middleware('VerifyCsrfToken');
 
-        $req = Request();
-        $idpedido           = $req->input('pedido_id');
-        $idproduto          = $req->input('produto_id');
-        $remove_apenas_item = (boolean)$req->input('item');
+        #dd($req);
+        $idpedido           = $req->pedido_id;
+        $idproduto          = $req->produto_id;
+        $remove_apenas_item = (boolean)$req->item;
         $idusuario          = Auth::id();
+
+        #dd($idpedido);
 
         $idpedido = Pedido::consultaId([
             'id'      => $idpedido,
             'user_id' => $idusuario,
-            'status'  => 'RE' // Reservada
             ]);
 
         if( empty($idpedido) ) {
-            $req->session()->flash('mensagem-falha', 'Pedido não encontrado!');
+            #$req->session()->flash('mensagem-falha', 'Pedido não encontrado!');
             return redirect()->route('carrinho.index');
         }
 
@@ -124,18 +124,17 @@ class CarrinhoController extends Controller
         return redirect()->route('carrinho.index');
     }
 
-    public function concluir()
+    public function concluir(Request $req)
     {
-        $this->middleware('VerifyCsrfToken');
+        #$this->middleware('VerifyCsrfToken');
 
-        $req = Request();
+        #$req = Request();
         $idpedido  = $req->input('pedido_id');
         $idusuario = Auth::id();
 
         $check_pedido = Pedido::where([
             'id'      => $idpedido,
             'user_id' => $idusuario,
-            'status'  => 'RE' // Reservada
             ])->exists();
 
         if( !$check_pedido ) {
@@ -153,13 +152,9 @@ class CarrinhoController extends Controller
 
         PedidoProduto::where([
             'pedido_id' => $idpedido
-            ])->update([
-                'status' => 'PA'
             ]);
         Pedido::where([
                 'id' => $idpedido
-            ])->update([
-                'status' => 'PA'
             ]);
 
         $req->session()->flash('mensagem-sucesso', 'Compra concluída com sucesso!');
@@ -167,16 +162,14 @@ class CarrinhoController extends Controller
         return redirect()->route('carrinho.compras');
     }
 
-    public function compras()
+    public function compras() 
     {
 
         $compras = Pedido::where([
-            'status'  => 'PA',
             'user_id' => Auth::id()
             ])->orderBy('created_at', 'desc')->get();
 
         $cancelados = Pedido::where([
-            'status'  => 'CA',
             'user_id' => Auth::id()
             ])->orderBy('updated_at', 'desc')->get();
 
@@ -201,7 +194,6 @@ class CarrinhoController extends Controller
         $check_pedido = Pedido::where([
             'id'      => $idpedido,
             'user_id' => $idusuario,
-            'status'  => 'PA' // Pago
             ])->exists();
 
         if( !$check_pedido ) {
@@ -211,7 +203,6 @@ class CarrinhoController extends Controller
 
         $check_produtos = PedidoProduto::where([
                 'pedido_id' => $idpedido,
-                'status'    => 'PA'
             ])->whereIn('id', $idspedido_prod)->exists();
 
         if( !$check_produtos ) {
@@ -221,21 +212,15 @@ class CarrinhoController extends Controller
 
         PedidoProduto::where([
                 'pedido_id' => $idpedido,
-                'status'    => 'PA'
-            ])->whereIn('id', $idspedido_prod)->update([
-                'status' => 'CA'
-            ]);
+            ])->whereIn('id', $idspedido_prod);
 
         $check_pedido_cancel = PedidoProduto::where([
                 'pedido_id' => $idpedido,
-                'status'    => 'PA'
             ])->exists();
 
         if( !$check_pedido_cancel ) {
             Pedido::where([
                 'id' => $idpedido
-            ])->update([
-                'status' => 'CA'
             ]);
 
             $req->session()->flash('mensagem-sucesso', 'Compra cancelada com sucesso!');

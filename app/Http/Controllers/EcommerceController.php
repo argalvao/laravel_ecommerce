@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Product;
+use App\Models\User;
 
 class EcommerceController extends Controller
 {
@@ -18,4 +19,13 @@ class EcommerceController extends Controller
     	$products = Product::all();
         return view('welcome',compact('products'));
     } 
+
+    public function usuario(){
+        $usuarios = User::all();
+        return view ('auth.usuario', compact('usuarios'));
+    }
+
+    public function concluido(){
+        return view('carrinho.concluido');
+    }
 }

@@ -26,7 +26,7 @@
         <div class="alert alert-success mb-1 mt-1">
             {{ session('status') }}
         </div>
-    @endif
+    @endif 
 
     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
